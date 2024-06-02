@@ -57,7 +57,7 @@ def main():
                   /___/                 /_/         
 ''')
     
-    print('Scraping list...')
+    print('Scraping from API...')
     _scrape()
     
     global _proxies, _active
