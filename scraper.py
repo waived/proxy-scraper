@@ -50,13 +50,12 @@ def main():
         sys.exit('Invalid proxy type! Exiting...\r\n')
     
     print('''\033[1m\033[37m
-   ___                      ____                         
-  / _ \_______ __ ____ __  / __/__________ ____  ___ ____
- / ___/ __/ _ \\ \ / // / _\ \/ __/ __/ _ `/ _ \/ -_) __/
-/_/  /_/  \___/_\_\\_, / /___/\__/_/  \_,_/ .__/\__/_/   
-                  /___/                  /_/             
+   ___                     ____                         
+  / _ \_______ __ ____ __ / __/__________ ____  ___ ____
+ / ___/ __/ _ \\\ \ / // /_\ \/ __/ __/ _ `/ _ \/ -_) __/
+/_/  /_/  \___/_\_\\_,  //___/\__/_/  \_,_/ .__/\__/_/   
+                  /___/                 /_/         
 ''')
-    
     
     print('Scraping list...')
     _scrape()
@@ -74,14 +73,15 @@ def main():
                     break
         except Exception as e:
             print(e)
-    
-    
+
+    # wait till remaining thread/s exit
     while _active != 0:
         pass
     
     print('\033[37m\r\nDone! Flushing alive-proxies to output file...')
     with open(sys.argv[3], 'w') as fwrite:
         for item in _proxies:
+            # add line-feed
             fwrite.write(item + '\n')
         fwrite.close()
 
