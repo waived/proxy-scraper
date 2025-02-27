@@ -22,14 +22,14 @@ def _scrape():
     else:
         sys.exit('\033[33mAPI removed/unavailable! Exiting...')
         
-def _check(prox):
+def _check(prox, t_out):
     global _active, _proxies
     _active +=1
     try:
         _ip, _port = prox.strip().split(":")
         
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(1)
+        s.settimeout(int(t_out))
         s.connect((_ip, int(_port)))
         s.send('GET / HTTP/1.1\r\nHost:www.example.com\r\n\r\n'.encode())
         s.close()
@@ -43,8 +43,8 @@ def _check(prox):
 
 def main():
     os.system('clear')
-    if len(sys.argv) != 4:
-        sys.exit('Usage: <proxy type: http/https/socks4> <# of threads> <output.txt>\r\n')
+    if len(sys.argv) != 5:
+        sys.exit('Usage: <proxy type: http/https/socks4> <# of threads> <timeout-seconds> <output.txt>\r\n')
         
     if not (sys.argv[1].lower() == 'http' or sys.argv[1].lower() == 'https' or sys.argv[1].lower() == 'socks4'):
         sys.exit('Invalid proxy type! Exiting...\r\n')
@@ -67,7 +67,7 @@ def main():
         try:            
             while True:
                 if _active != int(sys.argv[2]):
-                    x = threading.Thread(target=_check, args=(prox,))
+                    x = threading.Thread(target=_check, args=(prox, int(sys.argv[3])))
                     x.daemonized = True
                     x.start()
                     break
@@ -79,7 +79,7 @@ def main():
         pass
     
     print('\033[37m\r\nDone! Flushing alive-proxies to output file...')
-    with open(sys.argv[3], 'w') as fwrite:
+    with open(sys.argv[4], 'w') as fwrite:
         for item in _proxies:
             # add line-feed
             fwrite.write(item + '\n')
