@@ -68,7 +68,7 @@ def main():
             while True:
                 if _active != int(sys.argv[2]):
                     x = threading.Thread(target=_check, args=(prox, int(sys.argv[3])))
-                    x.daemonized = True
+                    x.daemon = True
                     x.start()
                     break
         except Exception as e:
